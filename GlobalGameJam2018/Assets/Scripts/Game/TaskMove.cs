@@ -23,7 +23,7 @@ public class TaskMove : Task {
             this.MoveBlinded(blinded, move);
             isWalking = true;
         }
-        bool stop = d.magnitude < 0.5f;
+        bool stop = d.magnitude < 1.0f;
         blinded.GetAnimator().SetBool("blindedIsWalking", isWalking && !stop);
         return (stop);
 	}

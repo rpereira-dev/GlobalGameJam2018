@@ -133,6 +133,33 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2, y: 0.14, z: 4}
   m_Center: {x: 0, y: 0, z: 2}
+--- !u!1 &101523001 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1259657461771252, guid: 4a9dcba189affd647b2d5dde071dcd04,
+    type: 2}
+  m_PrefabInternal: {fileID: 666850314}
+--- !u!114 &101523003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 101523001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1297475563, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 1
+  m_Spacing: 0
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 1
+  m_ChildControlHeight: 1
 --- !u!1 &112488683
 GameObject:
   m_ObjectHideFlags: 0
@@ -997,6 +1024,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2, y: 0.14, z: 4}
   m_Center: {x: 0, y: 0, z: 2}
+--- !u!1 &270997997 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 100000, guid: 144d426238715134c9e5898289a27ea4, type: 3}
+  m_PrefabInternal: {fileID: 1736187662}
+--- !u!65 &270998001
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 270997997}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.25, y: 0.25, z: 0.25}
+  m_Center: {x: 0, y: -0.125, z: 0}
 --- !u!1001 &303569420
 Prefab:
   m_ObjectHideFlags: 0
@@ -1435,7 +1478,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.02
   far clip plane: 1000
   field of view: 60
   orthographic: 0
@@ -1487,12 +1530,16 @@ MonoBehaviour:
   birdObject: {fileID: 680960258}
   blindedObject: {fileID: 779236230}
   birdSelectionObject: {fileID: 1373571059}
+  door: {fileID: 0}
   birdSounds:
   - {fileID: 446729944}
   - {fileID: 446729943}
   - {fileID: 446729942}
   - {fileID: 446729941}
   - {fileID: 446729940}
+  actionnable:
+  - {fileID: 270997997}
+  - {fileID: 2120900401}
 --- !u!82 &446729939
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2311,6 +2358,11 @@ Prefab:
         type: 2}
       propertyPath: m_LocalScale.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224632682075280248, guid: 4a9dcba189affd647b2d5dde071dcd04,
+        type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 200
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4a9dcba189affd647b2d5dde071dcd04, type: 2}
@@ -7256,6 +7308,22 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2092513943}
+--- !u!1 &2120900401 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 100000, guid: 24d40582378a11245b3a21553d552687, type: 3}
+  m_PrefabInternal: {fileID: 2072816389}
+--- !u!65 &2120900405
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2120900401}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.2, y: 0.5, z: 0.8}
+  m_Center: {x: 0, y: 0, z: 0.2}
 --- !u!1001 &2127302325
 Prefab:
   m_ObjectHideFlags: 0

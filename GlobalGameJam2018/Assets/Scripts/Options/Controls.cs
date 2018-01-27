@@ -9,8 +9,9 @@ public class Controls {
     public static int STRAFE_RIGHT  = 3;
     public static int MOVE_FORWARD  = 4;
     public static int MOVE_BACKWARD = 5;
-    public static int ACTION        = 6;
-    public static int KEY_MAX       = 7;
+    public static int BLINDED_ACTION = 6;
+    public static int BIRD_ACTION = 7;
+    public static int KEY_MAX       = 8;
 
     private static Key[] KEYS = new Key[KEY_MAX];
 
@@ -44,7 +45,8 @@ public class Controls {
         KEYS[STRAFE_RIGHT]  = new Key("STRAFE_RIGHT", "D");
         KEYS[MOVE_FORWARD]  = new Key("MOVE_FORWARD", "Z");
         KEYS[MOVE_BACKWARD] = new Key("MOVE_BACKWARD", "S");
-        KEYS[ACTION]        = new Key("ACTION", "R");
+        KEYS[BLINDED_ACTION] = new Key("BLINDED_ACTION", "R");
+        KEYS[BIRD_ACTION] = new Key("BIRD_ACTION", "F");
 
         VALUES[ROT_SPEED] = new Value("ROT_SPEED", 5);
         VALUES[ZOOM_SPEED] = new Value("ZOOM_SPEED", 0.1f);

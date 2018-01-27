@@ -42,6 +42,10 @@ public class CameraController {
         instance = this;
     }
 
+    public RaycastHit GetHit() {
+        return (this.hitInfo);
+    }
+
     public static CameraController Instance() {
         return (instance);
     }
@@ -111,6 +115,7 @@ public class CameraController {
         /** position 3rd person camera */
         this.phi += Input.GetAxis("Mouse X") * Controls.getValue(Controls.ROT_SPEED).asFloat();
         this.theta -= Input.GetAxis("Mouse Y") * Controls.getValue(Controls.ROT_SPEED).asFloat();
+        this.theta = Mathf.Clamp(this.theta, -70, 70);
 
         this.anim.SetBool("birdIsMoving", isMoving);
         this.anim.SetBool("birdIsOnGround", isOnGround);
@@ -119,8 +124,8 @@ public class CameraController {
     /** handle bird and camera rotation */
     private void UpdateRotation() {
 
-        float rx = (float)(this.theta - Math.PI / 2);
-        float ry = (float)(this.phi - Math.PI);
+        float rx = this.theta;
+        float ry = this.phi;
         float rz = 0;
         cam.transform.rotation = Quaternion.Euler(rx, ry, rz);
         bird.transform.rotation = cam.transform.rotation;
@@ -144,7 +149,7 @@ public class CameraController {
 
     /** set camera to first person */
     private void SetFirstPerson() {
-        cam.transform.position = bird.transform.position + 0.1f * Vector3.up;
+        cam.transform.position = bird.transform.position + 0.1f * (Vector3.up + bird.transform.forward);
         bird.transform.rotation = cam.transform.rotation;
     }
 
@@ -153,9 +158,9 @@ public class CameraController {
         /** else set 3rd person, and then offset bird to bot left screen */
         cam.transform.position = bird.transform.position - distanceFromBird * cam.transform.forward;
 
-        Vector3 horizontal = new Vector3(cam.transform.forward.z, 0, -cam.transform.forward.x).normalized;
+      /*  Vector3 horizontal = new Vector3(cam.transform.forward.z, 0, -cam.transform.forward.x).normalized;
         cam.transform.position += horizontal * (float)Math.Tan(this.alpha) * distanceFromBird;
-        
+        */
         Vector3 vertical = Vector3.up;
         cam.transform.position += vertical * (float)Math.Sin(this.beta) * distanceFromBird;
     }
@@ -164,10 +169,26 @@ public class CameraController {
     private void UpdateSelection() {
         if (Physics.Raycast(bird.transform.position, bird.transform.forward, out hitInfo, Mathf.Infinity, LAYER_MASK)) {
             this.selection.transform.position = hitInfo.point;
-            if (Controls.getKey(Controls.ACTION).isPressed()) {
-                Game.Instance().GetBlinded().setTask(new TaskMove(hitInfo.point));
+            if (Controls.getKey(Controls.BLINDED_ACTION).isPressed()) {
                 Game.Instance().birdPlaySound();
+                GameObject hovered = Game.Instance().GetHoveredActionnable();
+                if (hovered != null) {
+                    Game.Instance().GetBlinded().setTask(new TaskAction(hovered));
+                } else {
+                    Game.Instance().GetBlinded().setTask(new TaskMove(hitInfo.point));
+                }
+            } else if (Controls.getKey(Controls.BIRD_ACTION).isPressed()) {
+                Game.Instance().birdPlaySound();
+                GameObject hovered = Game.Instance().GetHoveredActionnable();
+                this.BirdAction(hovered);
             }
         }
+    }
+
+    private void BirdAction(GameObject hovered) {
+        if (hovered == null) {
+            return;
+        }
+        /** TODO : bird action down here */
     }
 }

@@ -16,6 +16,7 @@ public class Game : MonoBehaviour {
     private CameraController cameraController;
     private Blinded blinded;
     private System.Random rng;
+    private GameObject hoveredActionnable;
 
     public Canvas mainMenu;
     public Canvas pauseMenu;
@@ -25,12 +26,15 @@ public class Game : MonoBehaviour {
     public GameObject birdObject;
     public GameObject blindedObject;
     public GameObject birdSelectionObject;
+    public GameObject door;
     public AudioSource[] birdSounds;
+    public GameObject[] actionnable;
 
     public void Start() {
         gameInstance = this;
 
         Controls.Setup();
+        this.hoveredActionnable = null;
         this.cameraController = new CameraController(this.cam, this.birdObject, this.birdSelectionObject);
         this.blinded = new Blinded(blindedObject);
         this.rng = new System.Random();
@@ -92,6 +96,22 @@ public class Game : MonoBehaviour {
     public void UpdateWorld() {
         this.cameraController.LateUpdate(this);
         this.blinded.Update(this);
+        this.UpdateHoveredObject();
+    }
+
+    public void UpdateHoveredObject() {
+        this.hoveredActionnable = null;
+        RaycastHit hit = this.cameraController.GetHit();
+        if (hit.collider == null) {
+            return;
+        }
+        for (int i = 0; i < this.actionnable.Length; i++) {
+            GameObject obj = this.actionnable[i];
+            if (obj.GetComponent<Collider>() == hit.collider) {
+                this.hoveredActionnable = obj;
+                break;
+            }
+        }
     }
 
     public void log(string msg) {
@@ -153,6 +173,18 @@ public class Game : MonoBehaviour {
 
     public void RestartGame() {
         //TODO  replace each components
+    }
+
+    public GameObject[] GetActionnables() {
+        return (this.actionnable);
+    }
+
+    public GameObject GetActionnable(int index) {
+        return (this.actionnable[index]);
+    }
+
+    public GameObject GetHoveredActionnable() {
+        return (this.hoveredActionnable);
     }
 
 }

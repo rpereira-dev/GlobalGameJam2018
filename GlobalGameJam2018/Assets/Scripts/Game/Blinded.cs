@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class Blinded {
 
@@ -32,5 +33,13 @@ public class Blinded {
 
     public GameObject AsGameObject() {
         return (this.obj);
+    }
+
+    /** return true if the blinded man an reach the given activable */
+    public bool canReach(GameObject hovered) {
+        if (hovered == null) {
+            return (false);
+        }
+        return (hovered.transform.position - this.AsGameObject().transform.position).magnitude < 0.5f;
     }
 }

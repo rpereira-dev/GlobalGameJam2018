@@ -14,7 +14,6 @@ public class KeyBindingScrollList : MonoBehaviour {
 
     private void SetDisplay(bool value) {
         for (int i = 0; i < Controls.KEY_MAX; i++) {
-            //TODO : get button, setup, and add
 
         }
     }
