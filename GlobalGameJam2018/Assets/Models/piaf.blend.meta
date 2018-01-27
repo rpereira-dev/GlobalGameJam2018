@@ -1,40 +1,50 @@
 fileFormatVersion: 2
-guid: fdbb50828d1e35d40bcac1e303f4b0ad
-timeCreated: 1517010221
+guid: b50b6e29404565c498e8abfeeb8a1c3d
+timeCreated: 1517037878
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
-    100000: BirdBody
-    100002: BirdHead
-    100004: BirdTail
-    100006: LeftWingEnd
-    100008: LeftWingMid
-    100010: LeftWingShoulder
-    100012: //RootNode
-    100014: piaf
-    100016: RightWingEnd
-    100018: RightWingMid
-    100020: RightWingShoulder
-    100022: skeletonPiaf
-    400000: BirdBody
-    400002: BirdHead
-    400004: BirdTail
-    400006: LeftWingEnd
-    400008: LeftWingMid
-    400010: LeftWingShoulder
-    400012: //RootNode
-    400014: piaf
-    400016: RightWingEnd
-    400018: RightWingMid
-    400020: RightWingShoulder
-    400022: skeletonPiaf
-    2100000: unnamed
-    4300000: piaf
+    100000: Armature
+    100002: BirdBody
+    100004: BirdHead
+    100006: BirdTail
+    100008: leftFoot
+    100010: leftLeg
+    100012: LeftWingEnd
+    100014: LeftWingMid
+    100016: LeftWingShoulder
+    100018: //RootNode
+    100020: Plane
+    100022: rightFoot
+    100024: rightLeg
+    100026: RightWingEnd
+    100028: RightWingMid
+    100030: RightWingShoulder
+    400000: Armature
+    400002: BirdBody
+    400004: BirdHead
+    400006: BirdTail
+    400008: leftFoot
+    400010: leftLeg
+    400012: LeftWingEnd
+    400014: LeftWingMid
+    400016: LeftWingShoulder
+    400018: //RootNode
+    400020: Plane
+    400022: rightFoot
+    400024: rightLeg
+    400026: RightWingEnd
+    400028: RightWingMid
+    400030: RightWingShoulder
+    2100000: piafTexture__piafTexture_png
+    4300000: Plane
     7400000: Default Take
-    7400002: BirdFlying
+    7400002: marcher
+    7400004: repos
+    7400006: voler
     9500000: //RootNode
-    13700000: piaf
+    13700000: Plane
   externalObjects: {}
   materials:
     importMaterials: 1
@@ -73,6 +83,34 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: marcher
+      takeName: marcher
+      firstFrame: -1
+      lastFrame: 19
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -91,8 +129,36 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: BirdFlying
-      takeName: BirdFlying
+      name: repos
+      takeName: repos
+      firstFrame: -1
+      lastFrame: 19
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: voler
+      takeName: voler
       firstFrame: -1
       lastFrame: 19
       wrapMode: 0
