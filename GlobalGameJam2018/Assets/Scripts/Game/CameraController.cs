@@ -20,7 +20,7 @@ public class CameraController {
     }
 
     /** bird speed */
-    private float speed = 1.0f;
+    private float speed = 0.05f;
 
     /** polar coordinates */
     public float min_distance = 0.2f;

@@ -44,7 +44,7 @@ public class Controls {
         KEYS[MOVE_FORWARD]  = new Key("MOVE_FORWARD", "Z");
         KEYS[MOVE_BACKWARD] = new Key("MOVE_BACKWARD", "S");
 
-        VALUES[ROT_SPEED] = new Value("ROT_SPEED", 10);
+        VALUES[ROT_SPEED] = new Value("ROT_SPEED", 5);
         VALUES[ZOOM_SPEED] = new Value("ZOOM_SPEED", 0.1f);
     }
 }
