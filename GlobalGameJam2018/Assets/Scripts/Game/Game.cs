@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using System;
 
 public class Game : MonoBehaviour {
 
@@ -11,10 +10,12 @@ public class Game : MonoBehaviour {
     private const int STATE_INGAME              = 2;
     private const int STATE_INGAME_MENU         = 3;
     private const int STATE_INGAME_MENU_OPTIONS = 4;
-    private const int STATE_GAME_EXIT = 5;
+    private const int STATE_GAME_EXIT           = 5;
 
     private int state;
     private CameraController cameraController;
+    private Blinded blinded;
+    private System.Random rng;
 
     public Canvas mainMenu;
     public Canvas pauseMenu;
@@ -24,8 +25,7 @@ public class Game : MonoBehaviour {
     public GameObject birdObject;
     public GameObject blindedObject;
     public GameObject birdSelectionObject;
-
-    private Blinded blinded;
+    public AudioSource[] birdSounds;
 
     public void Start() {
         gameInstance = this;
@@ -33,6 +33,7 @@ public class Game : MonoBehaviour {
         Controls.Setup();
         this.cameraController = new CameraController(this.cam, this.birdObject, this.birdSelectionObject);
         this.blinded = new Blinded(blindedObject);
+        this.rng = new System.Random();
 
         this.SetState(STATE_MAIN_MENU);
     }
@@ -46,17 +47,24 @@ public class Game : MonoBehaviour {
     }
 
     public void Update() {
-
         if (Input.GetKeyDown(KeyCode.Escape)) {
-            this.onBack();
+            this.OnBack();
         }
+    }
 
+    public void birdPlaySound() {
+        int soundID = this.rng.Next() % this.birdSounds.Length;
+        AudioSource audio = this.birdSounds[soundID];
+        audio.Play();
+    }
+
+    public void LateUpdate() {
         if (this.state == STATE_INGAME) {
             this.UpdateWorld();
         }
     }
 
-    public void onBack() {
+    public void OnBack() {
         switch (this.state) {
 
             case STATE_MAIN_MENU:
@@ -82,7 +90,7 @@ public class Game : MonoBehaviour {
     }
 
     public void UpdateWorld() {
-        this.cameraController.Update(this);
+        this.cameraController.LateUpdate(this);
         this.blinded.Update(this);
     }
 

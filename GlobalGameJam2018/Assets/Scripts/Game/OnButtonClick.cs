@@ -9,6 +9,6 @@ public class OnButtonClick : MonoBehaviour {
     }
 
     public void onOptionBack() {
-        Game.Instance().onBack();
+        Game.Instance().OnBack();
     }
 }
