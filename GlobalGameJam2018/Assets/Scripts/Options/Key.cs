@@ -22,6 +22,10 @@ public class Key {
     public string getKeyCodeName() {
         return (this.keyCode.ToString());
     }
+    
+    public string getName() {
+        return (this.name);
+    }
 
     public bool isPressed() {
         return (Input.GetKey(this.keyCode));

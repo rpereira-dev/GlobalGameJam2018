@@ -217,6 +217,7 @@ public class CameraController {
 
     private static bool door1_oppened = false;
     private static bool door2_oppened = false;
+    private static bool door3_oppened = false;
 
     private void BirdAction(int actionnable) {
         Game game = Game.Instance();
@@ -227,13 +228,25 @@ public class CameraController {
                     door1_oppened = true;
                     game.door1.transform.Rotate(0, 0, -90);
                     game.door1.transform.Translate(0.5f, 0.5f, 0.0f);
+                    game.block1.GetComponent<AudioSource>().Play();
+                    game.stackMessage(5.0f, "\"My cell is opened?\"", Color.white, 0.85f);
+                    game.stackMessage(3.0f, "\"TWEET TWEET\"", Color.white, 0.85f);
+                    game.stackMessage(8.0f, "\"It’s you, the bird ? Thank you very much for your help! Now, be my eyes and guide me to the exit...\"", Color.white, 0.85f);
                 }
                 break;
             case Game.BUTTON_2:
                 if (!door2_oppened) {
                     door2_oppened = true;
                     game.block1.GetComponent<Rigidbody>().useGravity = true;
-                    game.log("BLOCK FALL");
+                    game.block1.GetComponent<AudioSource>().Play();
+                }
+                break;
+            case Game.BUTTON_3:
+                if (!door3_oppened) {
+                    door3_oppened = true;
+                    game.door4.transform.Rotate(0, 0, -90);
+                    game.door4.transform.Translate(0.5f, 0.5f, 0.0f);
+                    game.block1.GetComponent<AudioSource>().Play();
                 }
                 break;
             default:

@@ -13,6 +13,10 @@ public class OnButtonClick : MonoBehaviour {
     }
 
     public void onOptionBack() {
+        Game game = Game.Instance();
+        if (game.GetState() == Game.STATE_INGAME) {
+            return;
+        }
         Game.Instance().OnBack();
     }
 }

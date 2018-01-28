@@ -11,6 +11,7 @@ public class Game : MonoBehaviour {
     public const int STATE_INGAME_MENU         = 3;
     public const int STATE_INGAME_MENU_OPTIONS = 4;
     public const int STATE_GAME_EXIT           = 5;
+    public const int STATE_CREDIT               = 6;
 
     private int state;
     private CameraController cameraController;
@@ -21,6 +22,7 @@ public class Game : MonoBehaviour {
     public Canvas mainMenu;
     public Canvas pauseMenu;
     public Canvas optionMenu;
+    public Canvas creditMenu;
     public GameObject cam;
     public GameObject world;
     public GameObject birdObject;
@@ -34,12 +36,14 @@ public class Game : MonoBehaviour {
     public GameObject plaque1;
     public GameObject plaque2;
     public GameObject door3;
+    public GameObject door4;
 
     public const int BUTTON_1 = 0;
     public const int LEVIER_1 = 1;
     public const int BUTTON_2 = 2;
+    public const int BUTTON_3 = 3;
 
-    private Stack<Message> messages = new Stack<Message>();
+    private LinkedList<Message> messages = new LinkedList<Message>();
 
     public void Start() {
         gameInstance = this;
@@ -54,7 +58,11 @@ public class Game : MonoBehaviour {
     }
 
     public void stackMessage(float time, string msg, Color color) {
-        this.messages.Push(new Message(time, msg, color));
+        this.messages.AddLast(new Message(time, msg, color, 0));
+    }
+
+    public void stackMessage(float time, string msg, Color color, float offy) {
+        this.messages.AddLast(new Message(time, msg, color, offy));
     }
 
     public int GetState() {
@@ -62,18 +70,21 @@ public class Game : MonoBehaviour {
     }
 
     public void OnGUI() {
+        float dt = Time.deltaTime;
         if (this.messages.Count == 0) {
             return;
         }
-        Message message = this.messages.Peek();
-        message.time -= Time.deltaTime;
+        Message message = this.messages.First.Value;
+        message.time -= dt;
         if (message.time <= 0) {
-            this.messages.Pop();
+            this.messages.RemoveFirst();
         } else {
             var centeredStyle = GUI.skin.GetStyle("Label");
+            centeredStyle.fontSize = 32;
             centeredStyle.normal.textColor = message.color;
             centeredStyle.alignment = TextAnchor.UpperCenter;
-            GUI.Label(new Rect(Screen.width / 2 - 50, Screen.height / 2 - 25, 100, 50), message.msg, centeredStyle);
+            float w = Screen.width * 0.7f;
+            GUI.Label(new Rect((Screen.width - w) * 0.5f, Screen.height * message.offy, w, Screen.height * 0.2f), message.msg, centeredStyle);
         }
     }
 
@@ -110,6 +121,10 @@ public class Game : MonoBehaviour {
                 break;
 
             case STATE_MAIN_MENU_OPTIONS:
+                this.SetState(STATE_MAIN_MENU);
+                break;
+
+            case STATE_CREDIT:
                 this.SetState(STATE_MAIN_MENU);
                 break;
 
@@ -168,12 +183,21 @@ public class Game : MonoBehaviour {
                 this.optionMenu.enabled = false;
                 this.pauseMenu.enabled = false;
                 this.mainMenu.enabled = true;
+                this.creditMenu.enabled = false;
                 break;
             case STATE_MAIN_MENU_OPTIONS:
                 this.world.SetActive(false);
                 this.optionMenu.enabled = true;
                 this.pauseMenu.enabled = false;
                 this.mainMenu.enabled = false;
+                this.creditMenu.enabled = false;
+                break;
+            case STATE_CREDIT:
+                this.world.SetActive(false);
+                this.optionMenu.enabled = false;
+                this.pauseMenu.enabled = false;
+                this.mainMenu.enabled = false;
+                this.creditMenu.enabled = true;
                 break;
             case STATE_INGAME:
                 if (prevState == STATE_MAIN_MENU) {
@@ -183,12 +207,14 @@ public class Game : MonoBehaviour {
                 this.optionMenu.enabled = false;
                 this.pauseMenu.enabled = false;
                 this.mainMenu.enabled = false;
+                this.creditMenu.enabled = false;
                 Cursor.visible = false;
                 break;
             case STATE_INGAME_MENU:
                 this.world.SetActive(true);
                 this.optionMenu.enabled = false;
                 this.pauseMenu.enabled = true;
+                this.creditMenu.enabled = false;
                 this.mainMenu.enabled = false;
                 break;
             case STATE_INGAME_MENU_OPTIONS:
@@ -196,6 +222,7 @@ public class Game : MonoBehaviour {
                 this.optionMenu.enabled = true;
                 this.pauseMenu.enabled = false;
                 this.mainMenu.enabled = false;
+                this.creditMenu.enabled = false;
                 break;
             case STATE_GAME_EXIT:
 #if UNITY_EDITOR
@@ -226,7 +253,7 @@ public class Game : MonoBehaviour {
     }
 
     public bool IsBirdActivable(int hoveredIndex) {
-        return (hoveredIndex == BUTTON_1 || hoveredIndex == BUTTON_2);
+        return (hoveredIndex == BUTTON_1 || hoveredIndex == BUTTON_2 || hoveredIndex == BUTTON_3);
     }
 
     private bool door3_is_openned = false;
@@ -236,6 +263,8 @@ public class Game : MonoBehaviour {
             door3_is_openned = true;
             this.door3.transform.Rotate(0, 0, -90);
             this.door3.transform.Translate(0.5f, 0.5f, 0.0f);
+            this.block1.GetComponent<AudioSource>().Play();
+            this.stackMessage(12.0f, "\"I think I hear someone not far from here ... Could it remains a guardian?\"", Color.white, 0.85f);
         }
     }
 }

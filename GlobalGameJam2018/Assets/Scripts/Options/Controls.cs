@@ -21,6 +21,9 @@ public class Controls {
     private static Value[] VALUES = new Value[VALUES_MAX];
 
     public static Key getKey(int keyID) {
+        if (keyID < 0 || keyID >= KEYS.Length) {
+            return (null);
+        }
         if (KEYS[keyID] == null) {
             Setup();
         }
@@ -45,8 +48,8 @@ public class Controls {
         KEYS[STRAFE_RIGHT]  = new Key("STRAFE_RIGHT", "D");
         KEYS[MOVE_FORWARD]  = new Key("MOVE_FORWARD", "Z");
         KEYS[MOVE_BACKWARD] = new Key("MOVE_BACKWARD", "S");
-        KEYS[BLINDED_ACTION] = new Key("BLINDED_ACTION", "R");
-        KEYS[BIRD_ACTION] = new Key("BIRD_ACTION", "F");
+        KEYS[BLINDED_ACTION] = new Key("BLINDED_ACTION", "Mouse0");
+        KEYS[BIRD_ACTION]       = new Key("BIRD_ACTION", "Mouse1");
 
         VALUES[ROT_SPEED] = new Value("ROT_SPEED", 5);
         VALUES[ZOOM_SPEED] = new Value("ZOOM_SPEED", 0.1f);
