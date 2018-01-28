@@ -33,7 +33,7 @@ public class TaskAction : Task {
                     door2_oppened = true;
                     game.door2.transform.Rotate(0, 0, -90);
                     game.door2.transform.Translate(0.5f, 0.5f, 0.0f);
-                    game.block1.GetComponent<AudioSource>().Play();
+                game.PlayBlockSound();
                 break;
 
                 default:

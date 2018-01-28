@@ -22,12 +22,12 @@ public class CameraController {
     }
 
     /** bird speed */
-    private float speed = 0.05f;
+    private float speed = 2.0f;
 
     /** polar coordinates */
     public float min_distance = 0.2f;
     public float distance = 1;
-    public float phi = 0;
+    public float phi = 180;
     public float theta = 0;
 
     /** camera rotation relatively to the bird */
@@ -61,6 +61,7 @@ public class CameraController {
         Vector3 f = bird.transform.forward;
         bool isMoving = false;
         bool isOnGround = false;
+        float dt = Time.deltaTime;
 
         /** check ground */
         RaycastHit hit;
@@ -69,45 +70,45 @@ public class CameraController {
             isOnGround = true;
 
             if (Controls.getKey(Controls.STRAFE_UP).isPressed()) {
-                bird.transform.position += this.speed * Vector3.up * 2.0f;
+                bird.transform.position += this.speed * Vector3.up * 8.0f * dt;
                 isOnGround = false;
             }
 
             if (Controls.getKey(Controls.MOVE_FORWARD).isPressed()) {
-                bird.transform.position += this.speed * f * 0.2f;
+                bird.transform.position += this.speed * f * 0.2f * dt;
                 isMoving = true;
             } else if (Controls.getKey(Controls.MOVE_BACKWARD).isPressed()) {
-                bird.transform.position -= this.speed * f * 0.2f;
+                bird.transform.position -= this.speed * f * 0.2f * dt;
                 isMoving = true;
             }
         } else {
             if (Controls.getKey(Controls.STRAFE_LEFT).isPressed()) {
-                bird.transform.position += this.speed * new Vector3(-f.z, 0, f.x);
+                bird.transform.position += this.speed * new Vector3(-f.z, 0, f.x) * dt;
                 isMoving = true;
             } else if (Controls.getKey(Controls.STRAFE_RIGHT).isPressed()) {
-                bird.transform.position += this.speed * new Vector3(f.z, 0, -f.x);
+                bird.transform.position += this.speed * new Vector3(f.z, 0, -f.x) * dt;
                 isMoving = true;
             }
 
             if (Controls.getKey(Controls.STRAFE_UP).isPressed()) {
-                bird.transform.position += this.speed * Vector3.up;
+                bird.transform.position += this.speed * Vector3.up * dt;
                 isOnGround = false;
             } else if (Controls.getKey(Controls.STRAFE_DOWN).isPressed()) {
-                bird.transform.position -= this.speed * Vector3.up;
+                bird.transform.position -= this.speed * Vector3.up * dt;
                 isOnGround = false;
             }
 
             if (Controls.getKey(Controls.MOVE_FORWARD).isPressed()) {
-                bird.transform.position += this.speed * f;
+                bird.transform.position += this.speed * f * dt;
                 isMoving = true;
             } else if (Controls.getKey(Controls.MOVE_BACKWARD).isPressed()) {
-                bird.transform.position -= this.speed * f;
+                bird.transform.position -= this.speed * f * dt;
                 isMoving = true;
             }
         }
 
         /** bird is floating */
-        bird.transform.position += (float)Math.Sin(Time.time * this.speed * 64f) * 0.003f * Vector3.up;
+        bird.transform.position += (float)Math.Sin(Time.time * this.speed * 64f) * 0.003f * Vector3.up * dt;
 
         /** camera distance */
         this.distance -= Math.Sign(Input.mouseScrollDelta.y) * Controls.getValue(Controls.ZOOM_SPEED).asFloat();
@@ -228,17 +229,17 @@ public class CameraController {
                     door1_oppened = true;
                     game.door1.transform.Rotate(0, 0, -90);
                     game.door1.transform.Translate(0.5f, 0.5f, 0.0f);
-                    game.block1.GetComponent<AudioSource>().Play();
+                    game.PlayBlockSound();
                     game.stackMessage(5.0f, "\"My cell is opened?\"", Color.white, 0.85f);
                     game.stackMessage(3.0f, "\"TWEET TWEET\"", Color.white, 0.85f);
-                    game.stackMessage(8.0f, "\"It’s you, the bird ? Thank you very much for your help! Now, be my eyes and guide me to the exit...\"", Color.white, 0.85f);
+                    game.stackMessage(10.0f, "\"It’s you, the bird ? Thank you very much for your help! Now, be my eyes and guide me to the exit...\"", Color.white, 0.85f);
                 }
                 break;
             case Game.BUTTON_2:
                 if (!door2_oppened) {
                     door2_oppened = true;
                     game.block1.GetComponent<Rigidbody>().useGravity = true;
-                    game.block1.GetComponent<AudioSource>().Play();
+                    game.PlayBlockSound();
                 }
                 break;
             case Game.BUTTON_3:
@@ -246,8 +247,14 @@ public class CameraController {
                     door3_oppened = true;
                     game.door4.transform.Rotate(0, 0, -90);
                     game.door4.transform.Translate(0.5f, 0.5f, 0.0f);
-                    game.block1.GetComponent<AudioSource>().Play();
+                    game.PlayBlockSound();
                 }
+                break;
+            case Game.BUTTON_4:
+                    if (game.plaque3.tag == PressurePlaque.ACTIVE && game.plaque4.tag == PressurePlaque.ACTIVE) {
+                        game.PlayBlockSound();
+                        game.SetState(Game.STATE_WIN);
+                    }
                 break;
             default:
                 break;

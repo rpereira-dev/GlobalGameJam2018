@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
+using System.Collections;
+
 public class Game : MonoBehaviour {
 
     private static Game gameInstance;
@@ -12,23 +15,27 @@ public class Game : MonoBehaviour {
     public const int STATE_INGAME_MENU_OPTIONS = 4;
     public const int STATE_GAME_EXIT           = 5;
     public const int STATE_CREDIT               = 6;
+    public const int STATE_WIN                  = 7;
 
     private int state;
     private CameraController cameraController;
     private Blinded blinded;
     private System.Random rng;
     private GameObject hoveredActionnable;
+    private bool started = false;
 
     public Canvas mainMenu;
     public Canvas pauseMenu;
     public Canvas optionMenu;
     public Canvas creditMenu;
+    public Canvas winMenu;
     public GameObject cam;
     public GameObject world;
     public GameObject birdObject;
     public GameObject blindedObject;
     public GameObject birdSelectionObject;
     public AudioSource[] birdSounds;
+    public AudioSource blockSound;
     public GameObject[] actionnable;
     public GameObject door1;
     public GameObject door2;
@@ -37,11 +44,15 @@ public class Game : MonoBehaviour {
     public GameObject plaque2;
     public GameObject door3;
     public GameObject door4;
+    public GameObject plaque3;
+    public GameObject plaque4;
+    public GameObject block2;
 
     public const int BUTTON_1 = 0;
     public const int LEVIER_1 = 1;
     public const int BUTTON_2 = 2;
     public const int BUTTON_3 = 3;
+    public const int BUTTON_4 = 4;
 
     private LinkedList<Message> messages = new LinkedList<Message>();
 
@@ -139,6 +150,10 @@ public class Game : MonoBehaviour {
             case STATE_INGAME_MENU_OPTIONS:
                 this.SetState(STATE_INGAME_MENU);
                 break;
+
+            case STATE_WIN:
+                this.SetState(STATE_MAIN_MENU);
+                break;
         }
     }
 
@@ -184,6 +199,7 @@ public class Game : MonoBehaviour {
                 this.pauseMenu.enabled = false;
                 this.mainMenu.enabled = true;
                 this.creditMenu.enabled = false;
+                this.winMenu.enabled = false;
                 break;
             case STATE_MAIN_MENU_OPTIONS:
                 this.world.SetActive(false);
@@ -191,6 +207,7 @@ public class Game : MonoBehaviour {
                 this.pauseMenu.enabled = false;
                 this.mainMenu.enabled = false;
                 this.creditMenu.enabled = false;
+                this.winMenu.enabled = false;
                 break;
             case STATE_CREDIT:
                 this.world.SetActive(false);
@@ -198,6 +215,7 @@ public class Game : MonoBehaviour {
                 this.pauseMenu.enabled = false;
                 this.mainMenu.enabled = false;
                 this.creditMenu.enabled = true;
+                this.winMenu.enabled = false;
                 break;
             case STATE_INGAME:
                 if (prevState == STATE_MAIN_MENU) {
@@ -208,6 +226,7 @@ public class Game : MonoBehaviour {
                 this.pauseMenu.enabled = false;
                 this.mainMenu.enabled = false;
                 this.creditMenu.enabled = false;
+                this.winMenu.enabled = false;
                 Cursor.visible = false;
                 break;
             case STATE_INGAME_MENU:
@@ -216,6 +235,7 @@ public class Game : MonoBehaviour {
                 this.pauseMenu.enabled = true;
                 this.creditMenu.enabled = false;
                 this.mainMenu.enabled = false;
+                this.winMenu.enabled = false;
                 break;
             case STATE_INGAME_MENU_OPTIONS:
                 this.world.SetActive(false);
@@ -223,6 +243,17 @@ public class Game : MonoBehaviour {
                 this.pauseMenu.enabled = false;
                 this.mainMenu.enabled = false;
                 this.creditMenu.enabled = false;
+                this.winMenu.enabled = false;
+                break;
+            case STATE_WIN:
+                this.stackMessage(10.0f, "\"Finally, you see that, little bird ? Our cooperation has made us stronger... I am finally FREE...\"", Color.black, 0.85f);
+                this.stackMessage(10.0f, "\"Congratulations, you allowed the blind to escape! Thank you for playing!\"", Color.black, 0.85f);
+                this.world.SetActive(false);
+                this.optionMenu.enabled = true;
+                this.pauseMenu.enabled = false;
+                this.mainMenu.enabled = false;
+                this.creditMenu.enabled = false;
+                this.winMenu.enabled = true;
                 break;
             case STATE_GAME_EXIT:
 #if UNITY_EDITOR
@@ -237,7 +268,12 @@ public class Game : MonoBehaviour {
     }
 
     public void RestartGame() {
-        //TODO  replace each components
+        if (this.started) {
+            return;
+        }
+        this.stackMessage(8.0f, "\"I am in the dark ... I don’t remember anything...\"", Color.white, 0.85f);
+        this.stackMessage(8.0f, "\"I think everyone is gone... They left me alone in this prison...\"", Color.white, 0.85f);
+        this.stackMessage(8.0f, "\"I'm going to die here ... To rot in this rat hole...\"", Color.white, 0.85f);
     }
 
     public GameObject[] GetActionnables() {
@@ -253,7 +289,7 @@ public class Game : MonoBehaviour {
     }
 
     public bool IsBirdActivable(int hoveredIndex) {
-        return (hoveredIndex == BUTTON_1 || hoveredIndex == BUTTON_2 || hoveredIndex == BUTTON_3);
+        return (hoveredIndex == BUTTON_1 || hoveredIndex == BUTTON_2 || hoveredIndex == BUTTON_3 || hoveredIndex == BUTTON_4);
     }
 
     private bool door3_is_openned = false;
@@ -263,8 +299,12 @@ public class Game : MonoBehaviour {
             door3_is_openned = true;
             this.door3.transform.Rotate(0, 0, -90);
             this.door3.transform.Translate(0.5f, 0.5f, 0.0f);
-            this.block1.GetComponent<AudioSource>().Play();
-            this.stackMessage(12.0f, "\"I think I hear someone not far from here ... Could it remains a guardian?\"", Color.white, 0.85f);
+            this.stackMessage(12.0f, "\"I think I hear someone nearby ... Any employee left in the building?\"", Color.white, 0.85f);
+            this.PlayBlockSound();
         }
+    }
+
+    public void PlayBlockSound() {
+        this.blockSound.Play();
     }
 }

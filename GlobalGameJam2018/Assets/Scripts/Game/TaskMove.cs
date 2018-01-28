@@ -4,7 +4,7 @@ using UnityEngine;
 public class TaskMove : Task {
 
     private Vector3 destination;
-    private float speed = 0.02f;
+    private float speed = 1.0f;
     private bool rotated = false;
 
     public TaskMove(Vector3 destination) {
@@ -29,7 +29,8 @@ public class TaskMove : Task {
 	}
 
     private void MoveBlinded(Blinded blinded, Vector3 move) {
-        blinded.AsGameObject().transform.position += this.speed * move;
+        float dt = Time.deltaTime;
+        blinded.AsGameObject().transform.position += this.speed * move * dt;
     }
 
     private void RotateBlinded(Blinded blinded, Vector3 move) {

@@ -22,6 +22,6 @@ public class Patrol : MonoBehaviour {
             this.transform.rotation = Quaternion.Euler(0, 90, 0);
         }
 
-        this.transform.position += this.transform.forward * 0.02f;
+        this.transform.position += this.transform.forward.normalized * Time.deltaTime * 2.0f;
     }
 }
