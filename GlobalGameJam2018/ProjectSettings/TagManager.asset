@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Bird
   - Blinded
+  - active
+  - unactive
   layers:
   - Default
   - TransparentFX

@@ -74,10 +74,10 @@ public class CameraController {
             }
 
             if (Controls.getKey(Controls.MOVE_FORWARD).isPressed()) {
-                bird.transform.position += this.speed * f * 0.1f;
+                bird.transform.position += this.speed * f * 0.2f;
                 isMoving = true;
             } else if (Controls.getKey(Controls.MOVE_BACKWARD).isPressed()) {
-                bird.transform.position -= this.speed * f * 0.1f;
+                bird.transform.position -= this.speed * f * 0.2f;
                 isMoving = true;
             }
         } else {
@@ -168,27 +168,76 @@ public class CameraController {
     /** update looking-at selection of the bird */
     private void UpdateSelection() {
         if (Physics.Raycast(bird.transform.position, bird.transform.forward, out hitInfo, Mathf.Infinity, LAYER_MASK)) {
+            this.selection.SetActive(hitInfo.distance > 0.5f);
             this.selection.transform.position = hitInfo.point;
-            if (Controls.getKey(Controls.BLINDED_ACTION).isPressed()) {
-                Game.Instance().birdPlaySound();
-                GameObject hovered = Game.Instance().GetHoveredActionnable();
-                if (hovered != null) {
-                    Game.Instance().GetBlinded().setTask(new TaskAction(hovered));
-                } else {
-                    Game.Instance().GetBlinded().setTask(new TaskMove(hitInfo.point));
+
+            Game game = Game.Instance();
+            GameObject hovered = game.GetHoveredActionnable();
+            this.selection.GetComponent<Renderer>().material.color = (hovered != null) ? new Color(0, 1, 0, 0.3f) : new Color(1, 0, 0, 0.3f);
+
+            int hoveredIndex = -1;
+            if (hovered != null) {
+                for (int index = 0; index < Game.Instance().GetActionnables().Length; index++) {
+                    if (game.GetActionnable(index) == hovered) {
+                        hoveredIndex = index;
+                        break;
+                    }
                 }
-            } else if (Controls.getKey(Controls.BIRD_ACTION).isPressed()) {
-                Game.Instance().birdPlaySound();
-                GameObject hovered = Game.Instance().GetHoveredActionnable();
-                this.BirdAction(hovered);
+            }
+            if (hovered != null && Controls.getKey(Controls.BIRD_ACTION).isPressed()) {
+
+                if ((this.bird.transform.position - hovered.transform.position).magnitude > 2.0f) {
+                    game.stackMessage(1.0f, "The bird is out of range!", Color.red);
+                } else if (!game.IsBirdActivable(hoveredIndex)) {
+                    game.stackMessage(1.0f, "This item cannot be activated by the bird", Color.red);
+                } else {
+                    game.birdPlaySound();
+                    this.BirdAction(hoveredIndex);
+                }
+            }
+
+            if (Controls.getKey(Controls.BLINDED_ACTION).isPressed()) {
+                if (hovered != null) {
+                    if (!game.GetBlinded().canReach(hovered)) {
+                        game.stackMessage(1.0f, "The blinded is out of range!", Color.red);
+                    } else if (game.IsBirdActivable(hoveredIndex)) {
+                        game.stackMessage(1.0f, "This item cannot be activated by the blinded", Color.red);
+                    } else {
+                        game.birdPlaySound();
+                        game.GetBlinded().setTask(new TaskAction(hoveredIndex));
+                    }
+                } else {
+                    game.birdPlaySound();
+                    game.GetBlinded().setTask(new TaskMove(hitInfo.point));
+                }
             }
         }
     }
 
-    private void BirdAction(GameObject hovered) {
-        if (hovered == null) {
-            return;
+
+    private static bool door1_oppened = false;
+    private static bool door2_oppened = false;
+
+    private void BirdAction(int actionnable) {
+        Game game = Game.Instance();
+
+        switch (actionnable) {
+            case Game.BUTTON_1:
+                if (!door1_oppened) {
+                    door1_oppened = true;
+                    game.door1.transform.Rotate(0, 0, -90);
+                    game.door1.transform.Translate(0.5f, 0.5f, 0.0f);
+                }
+                break;
+            case Game.BUTTON_2:
+                if (!door2_oppened) {
+                    door2_oppened = true;
+                    game.block1.GetComponent<Rigidbody>().useGravity = true;
+                    game.log("BLOCK FALL");
+                }
+                break;
+            default:
+                break;
         }
-        /** TODO : bird action down here */
     }
 }

@@ -21,6 +21,14 @@ public class Blinded {
                 this.task = null;
             }
         }
+        Game.Instance().GetBlinded().GetAnimator().SetBool("blindedHitWall", false);
+
+        RaycastHit hit;
+        if (Physics.Raycast(this.obj.transform.position + 0.9f * Vector3.up , this.obj.transform.forward, out hit, 2.0f)) {
+            if (hit.distance < 0.8f) {
+                Game.Instance().GetBlinded().GetAnimator().SetBool("blindedHitWall", true);
+            }
+        }
 	}
 
     public Animator GetAnimator() {
@@ -40,6 +48,6 @@ public class Blinded {
         if (hovered == null) {
             return (false);
         }
-        return (hovered.transform.position - this.AsGameObject().transform.position).magnitude < 0.5f;
+        return (hovered.transform.position - this.AsGameObject().transform.position).magnitude < 2.4f;
     }
 }

@@ -8,12 +8,32 @@ ModelImporter:
     100000: //RootNode
     400000: //RootNode
     2100000: Material_008
+    2100002: Material__wallGrate_png
+    2100004: None__wallGrate_png
+    2100006: wallGrateMATERIAL__wallGrate_png
+    2100008: wallGratePD__wallGrate_png
+    2100010: salopesalopesalope__wallGrrrrr_png
     2300000: //RootNode
     3300000: //RootNode
     4300000: wallGrate
     7400000: Default Take
     9500000: //RootNode
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material__wallGrate_png
+    second: {instanceID: 0}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: None__wallGrate_png
+    second: {instanceID: 0}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: wallGratePD__wallGrate_png
+    second: {fileID: 2100002, guid: c028f77f4b8bb70478a4ab2b41eff9fa, type: 3}
   materials:
     importMaterials: 1
     materialName: 0

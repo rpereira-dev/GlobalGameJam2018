@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class TaskAction : Task {
 
-    public GameObject actionnable;
+    public int actionnable;
     private TaskMove move;
 
-    public TaskAction(GameObject actionnable) {
+    public TaskAction(int actionnable) {
         this.actionnable = actionnable;
-        this.move = new TaskMove(this.actionnable.transform.position);
+        this.move = new TaskMove(Game.Instance().GetActionnable(actionnable).transform.position);
     }
 
     override
@@ -21,14 +21,24 @@ public class TaskAction : Task {
         return (this.DoAction(Game.Instance(), blinded));
     }
 
-    public bool DoAction(Game game, Blinded blinded) {
-        if (this.actionnable == game.GetActionnable(0)) {
-            game.log("PRESSED BUTTON");
-            /* game.door ...*/
-        } else if (this.actionnable == game.GetActionnable(1)) {
-            game.log("PRESSED LEVIER");
 
+    private static bool door2_oppened = false;
+
+    public bool DoAction(Game game, Blinded blinded) {
+            switch (this.actionnable) {
+                case (Game.LEVIER_1):
+                    if (door2_oppened) {
+                        break;
+                    }
+                    door2_oppened = true;
+                    game.door2.transform.Rotate(0, 0, -90);
+                    game.door2.transform.Translate(0.5f, 0.5f, 0.0f);
+                break;
+
+                default:
+                    game.log("this actionnable is not implemeted yet");
+                    break;
         }
-        return (false);
+        return (true);
     }
 }

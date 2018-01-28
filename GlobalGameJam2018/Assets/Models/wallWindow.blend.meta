@@ -9,12 +9,31 @@ ModelImporter:
     400000: //RootNode
     2100000: Material_011
     2100002: Material_010
+    2100004: None__wallWindow_png
+    2100006: Material__wallWindow_png
+    2100008: wallWindowPD__wallWindow_png
+    2100010: niquebientagrosserace__wallWinnn_png
     2300000: //RootNode
     3300000: //RootNode
     4300000: wallWindow
     7400000: Default Take
     9500000: //RootNode
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material__wallWindow_png
+    second: {instanceID: 0}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: None__wallWindow_png
+    second: {instanceID: 0}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: wallWindowPD__wallWindow_png
+    second: {fileID: 2100002, guid: c028f77f4b8bb70478a4ab2b41eff9fa, type: 3}
   materials:
     importMaterials: 1
     materialName: 0

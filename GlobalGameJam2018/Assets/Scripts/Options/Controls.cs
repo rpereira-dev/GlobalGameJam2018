@@ -39,7 +39,7 @@ public class Controls {
         if (KEYS[STRAFE_UP] != null) {
             return;
         }
-        KEYS[STRAFE_UP]     = new Key("STRAFE_UP", "A");
+        KEYS[STRAFE_UP]     = new Key("STRAFE_UP", "Space");
         KEYS[STRAFE_DOWN]   = new Key("STRAFE_DOWN", "E");
         KEYS[STRAFE_LEFT]   = new Key("STRAFE_LEFT", "Q");
         KEYS[STRAFE_RIGHT]  = new Key("STRAFE_RIGHT", "D");

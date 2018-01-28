@@ -1,16 +1,16 @@
 ﻿using UnityEngine;
 using System;
-
+using System.Collections.Generic;
 public class Game : MonoBehaviour {
 
     private static Game gameInstance;
 
-    private const int STATE_MAIN_MENU           = 0;
-    private const int STATE_MAIN_MENU_OPTIONS   = 1;
-    private const int STATE_INGAME              = 2;
-    private const int STATE_INGAME_MENU         = 3;
-    private const int STATE_INGAME_MENU_OPTIONS = 4;
-    private const int STATE_GAME_EXIT           = 5;
+    public const int STATE_MAIN_MENU           = 0;
+    public const int STATE_MAIN_MENU_OPTIONS   = 1;
+    public const int STATE_INGAME              = 2;
+    public const int STATE_INGAME_MENU         = 3;
+    public const int STATE_INGAME_MENU_OPTIONS = 4;
+    public const int STATE_GAME_EXIT           = 5;
 
     private int state;
     private CameraController cameraController;
@@ -26,9 +26,20 @@ public class Game : MonoBehaviour {
     public GameObject birdObject;
     public GameObject blindedObject;
     public GameObject birdSelectionObject;
-    public GameObject door;
     public AudioSource[] birdSounds;
     public GameObject[] actionnable;
+    public GameObject door1;
+    public GameObject door2;
+    public GameObject block1;
+    public GameObject plaque1;
+    public GameObject plaque2;
+    public GameObject door3;
+
+    public const int BUTTON_1 = 0;
+    public const int LEVIER_1 = 1;
+    public const int BUTTON_2 = 2;
+
+    private Stack<Message> messages = new Stack<Message>();
 
     public void Start() {
         gameInstance = this;
@@ -40,6 +51,30 @@ public class Game : MonoBehaviour {
         this.rng = new System.Random();
 
         this.SetState(STATE_MAIN_MENU);
+    }
+
+    public void stackMessage(float time, string msg, Color color) {
+        this.messages.Push(new Message(time, msg, color));
+    }
+
+    public int GetState() {
+        return (this.state);
+    }
+
+    public void OnGUI() {
+        if (this.messages.Count == 0) {
+            return;
+        }
+        Message message = this.messages.Peek();
+        message.time -= Time.deltaTime;
+        if (message.time <= 0) {
+            this.messages.Pop();
+        } else {
+            var centeredStyle = GUI.skin.GetStyle("Label");
+            centeredStyle.normal.textColor = message.color;
+            centeredStyle.alignment = TextAnchor.UpperCenter;
+            GUI.Label(new Rect(Screen.width / 2 - 50, Screen.height / 2 - 25, 100, 50), message.msg, centeredStyle);
+        }
     }
 
     public static Game Instance() {
@@ -70,7 +105,6 @@ public class Game : MonoBehaviour {
 
     public void OnBack() {
         switch (this.state) {
-
             case STATE_MAIN_MENU:
                 this.SetState(STATE_GAME_EXIT);
                 break;
@@ -121,10 +155,13 @@ public class Game : MonoBehaviour {
     public void SetState(int state) {
         int prevState = this.state;
         this.state = state;
+
         this.Refresh(prevState);
     }
 
     private void Refresh(int prevState) {
+        Cursor.visible = true;
+
         switch (this.state) {
             case STATE_MAIN_MENU:
                 this.world.SetActive(false);
@@ -146,6 +183,7 @@ public class Game : MonoBehaviour {
                 this.optionMenu.enabled = false;
                 this.pauseMenu.enabled = false;
                 this.mainMenu.enabled = false;
+                Cursor.visible = false;
                 break;
             case STATE_INGAME_MENU:
                 this.world.SetActive(true);
@@ -187,4 +225,17 @@ public class Game : MonoBehaviour {
         return (this.hoveredActionnable);
     }
 
+    public bool IsBirdActivable(int hoveredIndex) {
+        return (hoveredIndex == BUTTON_1 || hoveredIndex == BUTTON_2);
+    }
+
+    private bool door3_is_openned = false;
+
+    public void CheckPressurePlaque() {
+        if (this.plaque1.tag == PressurePlaque.ACTIVE && this.plaque2.tag == PressurePlaque.ACTIVE && !door3_is_openned) {
+            door3_is_openned = true;
+            this.door3.transform.Rotate(0, 0, -90);
+            this.door3.transform.Translate(0.5f, 0.5f, 0.0f);
+        }
+    }
 }
